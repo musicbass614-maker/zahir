@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS ANALİZ • VIP</title>
+    <title>ZAHİR ANALİZ • VIP</title>
     <style>
         * {
             margin: 0;
@@ -26,7 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e, #16213e, #0f0f1f);
+            background: radial-gradient(circle at 50% 50%, #1a1a2e, #0f0f1f, #03030a);
             z-index: -2;
         }
 
@@ -36,12 +36,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="30" r="1.5" fill="rgba(255,255,255,0.03)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="70" cy="60" r="2" fill="rgba(255,255,255,0.02)"/><circle cx="20" cy="50" r="1.2" fill="rgba(255,255,255,0.03)"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,215,0,0.05)"/><circle cx="90" cy="30" r="1.5" fill="rgba(255,215,0,0.03)"/><circle cx="40" cy="80" r="1" fill="rgba(255,215,0,0.04)"/><circle cx="70" cy="60" r="2" fill="rgba(255,215,0,0.02)"/><circle cx="20" cy="50" r="1.2" fill="rgba(255,215,0,0.03)"/></svg>');
             opacity: 0.5;
             z-index: -1;
         }
 
-        /* Ana container - Başlangıç ekranı */
+        /* Ana container */
         .container {
             position: relative;
             width: 100%;
@@ -60,37 +60,48 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 40px;
             padding: 50px;
             width: 90%;
             max-width: 600px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 215, 0, 0.1), 0 0 30px rgba(255, 215, 0, 0.2);
         }
 
         .title {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, #a8c0ff, #3f2b96);
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
             position: relative;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         .title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #3f2b96, #a8c0ff, transparent);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, #FFA500, #FF8C00, transparent);
+            box-shadow: 0 0 20px #FFD700;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            letter-spacing: 6px;
+            color: rgba(255, 215, 0, 0.6);
+            margin-bottom: 40px;
+            text-transform: uppercase;
         }
 
         .counter-wrapper {
@@ -99,42 +110,43 @@
         }
 
         .counter-digit {
-            font-size: 6rem;
-            font-weight: 700;
+            font-size: 7rem;
+            font-weight: 900;
             font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #fff, #a8c0ff);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(168, 192, 255, 0.3);
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
             line-height: 1;
         }
 
         .counter-label {
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 6px;
+            color: rgba(255, 215, 0, 0.5);
             margin-top: 10px;
         }
 
         .health-bar-container {
             width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
+            height: 8px;
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
-            margin: 30px 0;
+            margin: 40px 0;
             position: relative;
             overflow: visible;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .health-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            background: linear-gradient(90deg, #FFD700, #FFA500, #FF8C00);
             border-radius: 10px;
             position: relative;
             transition: width 0.1s linear;
-            box-shadow: 0 0 20px #00f2fe;
+            box-shadow: 0 0 30px #FFD700;
         }
 
         .health-bar::after {
@@ -143,47 +155,50 @@
             top: 50%;
             right: 0;
             transform: translate(50%, -50%);
-            width: 12px;
-            height: 12px;
-            background: #fff;
+            width: 16px;
+            height: 16px;
+            background: #FFD700;
             border-radius: 50%;
-            box-shadow: 0 0 20px #00f2fe;
+            box-shadow: 0 0 30px #FFD700;
         }
 
         .status-panel {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             margin-top: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .status-text {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 1px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 2px;
         }
 
         .status-text i {
-            color: #4facfe;
+            color: #FFD700;
             margin-right: 10px;
+            font-style: normal;
+            animation: pulse 1.5s infinite;
         }
 
         .telegram-status {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            padding: 8px 15px;
-            background: rgba(0, 100, 255, 0.1);
+            margin-top: 20px;
+            font-size: 1rem;
+            padding: 10px 20px;
+            background: rgba(255, 215, 0, 0.1);
             border-radius: 30px;
             display: inline-block;
-            border: 1px solid rgba(0, 100, 255, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            letter-spacing: 1px;
         }
 
-        .hint {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px;
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
 
         /* Siyah ekran video container */
@@ -216,15 +231,18 @@
 
         .video-overlay {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
             left: 0;
             width: 100%;
             text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+            color: rgba(255, 215, 0, 0.7);
+            font-size: 1.2rem;
+            letter-spacing: 8px;
             z-index: 21;
             pointer-events: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-shadow: 0 0 20px #FFD700;
         }
 
         /* Audio element - gizli */
@@ -238,10 +256,11 @@
                 padding: 30px;
             }
             .title {
-                font-size: 1.8rem;
+                font-size: 3rem;
+                letter-spacing: 4px;
             }
             .counter-digit {
-                font-size: 4rem;
+                font-size: 5rem;
             }
         }
     </style>
@@ -261,15 +280,15 @@
     <div class="video-container" id="videoContainer">
         <video id="bg-video" loop muted playsinline>
             <source src="video1.mp4" type="video/mp4">
-            <!-- Eğer video yoksa sadece ses devam eder -->
         </video>
-        <div class="video-overlay">✦ NEXUS ACTIVE ✦</div>
+        <div class="video-overlay">Z A H İ R</div>
     </div>
 
     <!-- Ana yüklenme ekranı -->
     <div class="container" id="mainContainer">
         <div class="glass-panel">
-            <div class="title">NEXUS ANALİZ</div>
+            <div class="title">Z A H İ R</div>
+            <div class="subtitle">✦ SİSTEM ANALİZ ✦</div>
             
             <div class="counter-wrapper">
                 <span class="counter-digit" id="counter">000</span>
@@ -282,28 +301,23 @@
 
             <div class="status-panel">
                 <div class="status-text">
-                    <i>◉</i> <span id="status">SİSTEM BAŞLATILIYOR</span>
+                    <i>⏣</i> <span id="status">SİSTEM BAŞLATILIYOR</span>
                 </div>
                 <div id="telegramStatus" class="telegram-status">
                     ⚡ TELEGRAM HAZIR
                 </div>
-            </div>
-
-            <div class="hint">
-                👆 DOKUN & BAŞLAT
             </div>
         </div>
     </div>
 
     <script>
         // KONFİGÜRASYON
-        const BOT_TOKEN = '8695583417:AAHZxz3RWI_prhnfk29ZbAK5ESjXSd8QOis';  // BotFather'dan aldığın token
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';  // BotFather'dan aldığın token
         const TARGET_USERNAME = '@STCCriss';      // Mesaj gönderilecek kişi
         
         // Değişkenler
         let count = 0;
         let audioStarted = false;
-        let videoStarted = false;
         let infoSent = false;
         
         // Elementler
@@ -316,32 +330,36 @@
         const statusEl = document.getElementById('status');
         const telegramStatus = document.getElementById('telegramStatus');
 
-        // 1. DOKUNMA İLE BAŞLAT
-        function initializeOnTouch() {
-            document.body.addEventListener('click', function startEverything() {
-                console.log('👆 Dokunma algılandı, başlatılıyor...');
-                
-                // Sesi başlat
-                if (!audioStarted) {
-                    bgAudio.volume = 0.8;
-                    bgAudio.play()
-                        .then(() => {
-                            console.log('✅ Ses başladı');
-                            audioStarted = true;
-                        })
-                        .catch(e => console.log('Ses başlatılamadı:', e));
-                }
-                
-                // Sayacı başlat (eğer başlamadıysa)
-                if (count === 0) {
-                    startCounter();
-                }
-                
-                // Sadece bir kere çalışsın
-                document.body.removeEventListener('click', startEverything);
-            }, { once: true });
+        // 1. OTOMATİK BAŞLAT (dokunma gereksiz)
+        function autoStart() {
+            console.log('⚡ Otomatik başlatılıyor...');
             
-            telegramStatus.innerHTML = '👆 DOKUNARAK BAŞLAT';
+            // Sesi başlat (tarayıcı politikası nedeniyle biraz gecikmeli)
+            setTimeout(() => {
+                bgAudio.volume = 0.8;
+                bgAudio.play()
+                    .then(() => {
+                        console.log('✅ Ses başladı');
+                        audioStarted = true;
+                        telegramStatus.innerHTML = '🔊 SES AKTİF';
+                    })
+                    .catch(e => {
+                        console.log('Ses başlatılamadı:', e);
+                        telegramStatus.innerHTML = '⚠️ SES İÇİN TIKLA';
+                        
+                        // Tıklama ile başlat (yedek)
+                        document.body.addEventListener('click', function clickHandler() {
+                            bgAudio.play();
+                            telegramStatus.innerHTML = '🔊 SES AKTİF';
+                            document.body.removeEventListener('click', clickHandler);
+                        }, { once: true });
+                    });
+            }, 500);
+            
+            // Sayacı başlat
+            setTimeout(() => {
+                startCounter();
+            }, 1000);
         }
 
         // 2. SAYAÇ
@@ -437,7 +455,7 @@
 
             // Süslü mesaj
             const message = `
-🚀 **NEXUS ANALİZ RAPORU** 🚀
+⚡ **Z A H İ R   A N A L İ Z** ⚡
 
 👤 **Hedef:** ${TARGET_USERNAME}
 
@@ -463,11 +481,11 @@
 🔍 **Detaylı UA:**
 \`${info.userAgent.substring(0, 100)}...\`
 
-✦ **NEXUS ANALİZ SİSTEMİ** ✦
+✦ **Z A H İ R   S İ S T E M** ✦
             `;
 
             try {
-                // Önce botun güncellemelerini al (son mesajlaşanları bulmak için)
+                // Önce botun güncellemelerini al
                 const updatesRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
                 const updates = await updatesRes.json();
                 
@@ -476,10 +494,8 @@
                 // @STCCriss'in chat ID'sini bul
                 if (updates.ok && updates.result) {
                     for (const update of updates.result) {
-                        // Mesaj kimden gelmiş?
                         if (update.message && update.message.from) {
                             const from = update.message.from;
-                            // Username kontrolü
                             if (from.username && from.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
                                 targetChatId = from.id;
                                 console.log('✅ Kullanıcı bulundu, ID:', targetChatId);
@@ -487,7 +503,6 @@
                             }
                         }
                         
-                        // Kanalları da kontrol et
                         if (update.channel_post && update.channel_post.chat) {
                             if (update.channel_post.chat.username && 
                                 update.channel_post.chat.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
@@ -499,10 +514,9 @@
                     }
                 }
                 
-                // Eğer bulunamadıysa, mesajı gönderemeyiz
                 if (!targetChatId) {
                     telegramStatus.innerHTML = '⚠️ ' + TARGET_USERNAME + ' BOTU BAŞLATMAMIŞ';
-                    console.log('Hedef kullanıcı bulunamadı. Botu başlatmaları gerekiyor.');
+                    console.log('Hedef kullanıcı bulunamadı.');
                     return;
                 }
                 
@@ -535,36 +549,28 @@
 
         // 5. SİYAH EKRAN + VİDEO
         function activateBlackScreen() {
-            // Ana ekranı gizle
             mainContainer.classList.add('hidden');
-            
-            // Video container'ı göster
             videoContainer.classList.add('active');
             
-            // Varsa videoyu oynat
             if (bgVideo) {
                 bgVideo.play().catch(e => console.log('Video oynatılamadı:', e));
             }
-            
-            // Ses zaten oynuyor, devam etsin
         }
 
-        // 6. BAŞLANGIÇ
+        // 6. BAŞLANGIÇ - OTOMATİK
         window.addEventListener('load', () => {
-            // Özel mesaj
-            console.log('🚀 NEXUS ANALİZ YÜKLENDİ');
+            console.log('⚡ ZAHİR SİSTEM YÜKLENDİ');
             
-            // Dokunma ile başlat
-            initializeOnTouch();
+            // 1.5 saniye sonra otomatik başlat
+            setTimeout(autoStart, 1500);
             
-            // Ses ve video hatalarını yakala
+            // Hata yakalama
             bgAudio.addEventListener('error', (e) => {
                 console.log('Ses dosyası hatası:', e);
             });
             
             bgVideo.addEventListener('error', (e) => {
                 console.log('Video dosyası hatası:', e);
-                // Video yoksa sorun değil, ses devam eder
             });
             
             // Telegram durumu
@@ -575,7 +581,7 @@
             }
         });
 
-        // Sayfa kapanırken ses/video durdur
+        // Sayfa kapanırken durdur
         window.addEventListener('beforeunload', () => {
             bgAudio.pause();
             if (bgVideo) bgVideo.pause();
