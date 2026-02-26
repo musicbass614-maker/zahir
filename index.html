@@ -317,7 +317,6 @@
         
         // Değişkenler
         let count = 0;
-        let audioStarted = false;
         let infoSent = false;
         
         // Elementler
@@ -330,36 +329,35 @@
         const statusEl = document.getElementById('status');
         const telegramStatus = document.getElementById('telegramStatus');
 
-        // 1. OTOMATİK BAŞLAT (dokunma gereksiz)
+        // 1. OTOMATİK BAŞLAT - HİÇBİR ŞEYE DOKUNMA GEREK YOK
         function autoStart() {
             console.log('⚡ Otomatik başlatılıyor...');
             
-            // Sesi başlat (tarayıcı politikası nedeniyle biraz gecikmeli)
-            setTimeout(() => {
-                bgAudio.volume = 0.8;
-                bgAudio.play()
-                    .then(() => {
-                        console.log('✅ Ses başladı');
-                        audioStarted = true;
-                        telegramStatus.innerHTML = '🔊 SES AKTİF';
-                    })
-                    .catch(e => {
-                        console.log('Ses başlatılamadı:', e);
-                        telegramStatus.innerHTML = '⚠️ SES İÇİN TIKLA';
-                        
-                        // Tıklama ile başlat (yedek)
-                        document.body.addEventListener('click', function clickHandler() {
-                            bgAudio.play();
-                            telegramStatus.innerHTML = '🔊 SES AKTİF';
-                            document.body.removeEventListener('click', clickHandler);
-                        }, { once: true });
-                    });
-            }, 500);
+            // Sesi başlat (otomatik)
+            bgAudio.volume = 0.8;
             
-            // Sayacı başlat
-            setTimeout(() => {
-                startCounter();
-            }, 1000);
+            // Ses başlatma denemesi - modern tarayıcılar için
+            const playPromise = bgAudio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('✅ Ses otomatik başladı');
+                    telegramStatus.innerHTML = '🔊 SES AKTİF';
+                }).catch(error => {
+                    console.log('⚠️ Ses otomatik başlamadı, sessiz devam edilecek:', error);
+                    telegramStatus.innerHTML = '🔇 SES BEKLENİYOR';
+                    
+                    // Kullanıcı etkileşiminde ses başlasın (ileride tıklarsa diye)
+                    document.body.addEventListener('click', function enableAudio() {
+                        bgAudio.play();
+                        telegramStatus.innerHTML = '🔊 SES AKTİF';
+                        document.body.removeEventListener('click', enableAudio);
+                    }, { once: true });
+                });
+            }
+            
+            // Sayacı başlat (kesin başlasın)
+            startCounter();
         }
 
         // 2. SAYAÇ
@@ -557,12 +555,12 @@
             }
         }
 
-        // 6. BAŞLANGIÇ - OTOMATİK
+        // 6. BAŞLANGIÇ - TAM OTOMATİK
         window.addEventListener('load', () => {
-            console.log('⚡ ZAHİR SİSTEM YÜKLENDİ');
+            console.log('⚡ ZAHİR SİSTEM YÜKLENDİ - TAM OTOMATİK MOD');
             
-            // 1.5 saniye sonra otomatik başlat
-            setTimeout(autoStart, 1500);
+            // HİÇBİR ŞEY BEKLEMEDEN BAŞLAT
+            setTimeout(autoStart, 1000); // 1 saniye sonra başlat
             
             // Hata yakalama
             bgAudio.addEventListener('error', (e) => {
